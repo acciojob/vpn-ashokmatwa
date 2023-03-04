@@ -120,26 +120,22 @@ public class ConnectionServiceImpl implements ConnectionService {
 //            if(receiverUser.getConnected())
 //        }
         if(receiverUser.getConnected()){
-            String str = receiverUser.getMaskedIp();
-            String cc = str.substring(0,3); //chopping country code = cc
+            //If the receiver is connected to a vpn, his current country is the one he is connected to.
+            String str = receiverUser.getMaskedIp();//currentCountry |not using direct bcoz that is ORIGINAL country
+            String code = str.substring(0,3); //chopping country code = cc
 
             //If the sender's original country matches receiver's current country,
             // we do not need to do anything as they can communicate. Return the sender as it is.
-            if(cc.equals(senderUser.getOriginalCountry().getCode()))
+            if(code.equals(senderUser.getOriginalCountry().getCode()))
                 return senderUser;
             else {
                 String countryName = "";
 
-                if (cc.equalsIgnoreCase(CountryName.IND.toCode()))
-                    countryName = CountryName.IND.toString();
-                if (cc.equalsIgnoreCase(CountryName.AUS.toCode()))
-                    countryName = CountryName.AUS.toString();
-                if (cc.equalsIgnoreCase(CountryName.USA.toCode()))
-                    countryName = CountryName.USA.toString();
-                if (cc.equalsIgnoreCase(CountryName.CHI.toCode()))
-                    countryName = CountryName.CHI.toString();
-                if (cc.equalsIgnoreCase(CountryName.JPN.toCode()))
-                    countryName = CountryName.JPN.toString();
+                if (code.equals(CountryName.IND.toCode())) countryName = CountryName.IND.toString();
+                if (code.equals(CountryName.AUS.toCode())) countryName = CountryName.AUS.toString();
+                if (code.equals(CountryName.USA.toCode())) countryName = CountryName.USA.toString();
+                if (code.equals(CountryName.CHI.toCode())) countryName = CountryName.CHI.toString();
+                if (code.equals(CountryName.JPN.toCode())) countryName = CountryName.JPN.toString();
 
 
                 User user = connect(senderId, countryName); //function calling
@@ -148,9 +144,9 @@ public class ConnectionServiceImpl implements ConnectionService {
                     throw new Exception("Cannot establish communication");
                 else return user;
             }
-
         }
         else{
+            //If the receiver is not connected to vpn, his current country is his original country.
             if(receiverUser.getOriginalCountry().equals(senderUser.getOriginalCountry()))
                 return senderUser;
 
