@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
 
             country.setUser(user);//foreign
 
-            user.setCountry(country); // bidirectional
+            user.setOriginalCountry(country); // bidirectional
             user.setUsername(username);
             user.setPassword(password);
             String originalIp = country.getCode()+"."+user.getId();//"countryCode.userId"

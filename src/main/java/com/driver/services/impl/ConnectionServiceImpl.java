@@ -25,7 +25,7 @@ public class ConnectionServiceImpl implements ConnectionService {
 
         if(user.getConnected()) throw new Exception("Already connected");
 
-        CountryName originalCountryName = user.getCountry().getCountryName();
+        CountryName originalCountryName = user.getOriginalCountry().getCountryName();
         String userCountryName = originalCountryName.toCode();
         if(userCountryName.equals(countryName))
             return user;
@@ -72,7 +72,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         //serviceProviderList.add(serviceProviderTobeSet);
 
         user.setConnected(true);
-        user.setCountry(countryToBeSet);
+        user.setOriginalCountry(countryToBeSet);
         String maskedIp = countryToBeSet.getCode() + "." + serviceProviderTobeSet.getId() + "." + user.getId();
         user.setMaskedIp(maskedIp);
         user.getConnectionList().add(connection); // bidirectional
