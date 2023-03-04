@@ -47,20 +47,20 @@ public class ConnectionServiceImpl implements ConnectionService {
 
         ServiceProvider serviceProviderTobeSet = null;
         Country countryToBeSet = null;
+        int count = Integer.MAX_VALUE;
         for (ServiceProvider currentServiceProvider : serviceProviderList){
             List<Country> countryList = currentServiceProvider.getCountryList();
             for (Country currentCountry : countryList){
-                if(currentCountry.getCountryName().equals(countryName1)){
-                    serviceProviderTobeSet = currentCountry.getServiceProvider(); // = currentServiceProvider
+                if(currentCountry.getCountryName().equals(countryName1) && count > currentServiceProvider.getId()){
+                    serviceProviderTobeSet = currentServiceProvider;
                     countryToBeSet = currentCountry;
+                    count = currentServiceProvider.getId();
                     //serviceProviderList.remove(currentServiceProvider);
-                    break;
                 }
             }
-            if(serviceProviderTobeSet != null) break;
         }
         //serviceProvider does not have given country
-//        if (serviceProviderTobeSet == null) throw new Exception("Unable to connect");
+        if (serviceProviderTobeSet == null) throw new Exception("Unable to connect");
 
         //establish  the connection
         Connection connection = new Connection();
@@ -88,7 +88,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         User user = userRepository2.findById(userId).get();
         if (!user.getConnected()) throw new Exception("Already disconnected");
 
-        List<Connection> connectionList = user.getConnectionList();
+        /*List<Connection> connectionList = user.getConnectionList();
         for (Connection connection : connectionList){
             if(connection.getUser().getId() == userId){
                 ServiceProvider serviceProvider = connection.getServiceProvider();
@@ -99,8 +99,8 @@ public class ConnectionServiceImpl implements ConnectionService {
                 break;
             }
         }
+        user.setConnectionList(connectionList);*/
 
-        user.setConnectionList(connectionList);
         user.setConnected(false);
         user.setMaskedIp(null);
 
