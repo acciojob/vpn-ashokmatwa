@@ -60,7 +60,7 @@ public class ConnectionServiceImpl implements ConnectionService {
             if(serviceProviderTobeSet != null) break;
         }
         //serviceProvider does not have given country
-        if (serviceProviderTobeSet == null) throw new Exception("Unable to connect");
+//        if (serviceProviderTobeSet == null) throw new Exception("Unable to connect");
 
         //establish  the connection
         Connection connection = new Connection();
