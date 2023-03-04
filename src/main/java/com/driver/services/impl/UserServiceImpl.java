@@ -60,7 +60,8 @@ public class UserServiceImpl implements UserService {
             user.setOriginalCountry(country); // bidirectional
             user.setUsername(username);
             user.setPassword(password);
-            String originalIp = country.getCode()+"."+user.getId();//"countryCode.userId"
+            //String originalIp = country.getCode()+"."+user.getId();//"countryCode.userId"
+            String originalIp = country.getCode() + "." + userRepository3.save(user).getId();
             user.setOriginalIp(originalIp);
             user.setMaskedIp(null);
             user.setConnected(false);
@@ -71,7 +72,7 @@ public class UserServiceImpl implements UserService {
             return user;
         }
         else {
-            throw new Exception();
+            throw new Exception("Country not found");
         }
     }
 
