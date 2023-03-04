@@ -60,26 +60,28 @@ public class ConnectionServiceImpl implements ConnectionService {
             }
         }
         //serviceProvider does not have given country
-        if (serviceProviderTobeSet == null) throw new Exception("Unable to connect");
+//        if (serviceProviderTobeSet == null) throw new Exception("Unable to connect");
 
         //establish  the connection
-        Connection connection = new Connection();
+        if(serviceProviderTobeSet != null) {
+            Connection connection = new Connection();
 
-        connection.setUser(user); // foreign
-        connection.setServiceProvider(serviceProviderTobeSet); // foreign
+            connection.setUser(user); // foreign
+            connection.setServiceProvider(serviceProviderTobeSet); // foreign
 
-        serviceProviderTobeSet.getConnectionList().add(connection); // foreign
-        //serviceProviderList.add(serviceProviderTobeSet);
+            serviceProviderTobeSet.getConnectionList().add(connection); // foreign
+            //serviceProviderList.add(serviceProviderTobeSet);
 
-        user.setConnected(true);
+            user.setConnected(true);
 //        user.setOriginalCountry(countryToBeSet);
-        String maskedIp = countryToBeSet.getCode() + "." + serviceProviderTobeSet.getId() + "." + user.getId();
-        user.setMaskedIp(maskedIp);
-        user.getConnectionList().add(connection); // bidirectional
-        //user.setServiceProviderList(serviceProviderList);
+            String maskedIp = countryToBeSet.getCode() + "." + serviceProviderTobeSet.getId() + "." + user.getId();
+            user.setMaskedIp(maskedIp);
+            user.getConnectionList().add(connection); // bidirectional
+            //user.setServiceProviderList(serviceProviderList);
 
-        userRepository2.save(user); // cascade --> connection
-        serviceProviderRepository2.save(serviceProviderTobeSet);
+            userRepository2.save(user); // cascade --> connection
+            serviceProviderRepository2.save(serviceProviderTobeSet);
+        }
 
         return user;
     }
